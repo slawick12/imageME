@@ -1,0 +1,27 @@
+---
+- hosts: imageMe_nodes
+  become: yes 
+  tasks:
+      - name: "install git"
+        yum:
+                name: git
+                state: latest
+
+      - name: "clone git"                
+        git: 
+                repo: https://github.com/jkanclerz/google-search-python.git
+                version: master
+                dest: /home/ec2-user/imageMe
+      - name: "test1"
+        shell: "echo 'export SEARCH_ENGINE_ID=006879359584856769921:rplfy3clmho' >> .bashrc "
+      - name: "test2"
+        shell: "echo 'GOOGLE_CLOUD_API_KEY=AIzaSyDLLC1pqOxkWA8jUjM-Cfwbl_13Sh_2t98' >> .bashrc"
+      - name: "creating directory"
+        file:
+                path: /home/ec2-user/bin
+                state: directory
+      - name: "copying file"
+        copy:
+                src: ./imageMe2.sh
+                dest: /home/ec2-user/bin/imageMe.sh
+                mode: +x
